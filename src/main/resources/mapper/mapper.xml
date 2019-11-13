@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Dao.Dao">
+    <resultMap id="mmm" type="com.example.demo.conttrle.entity.Classify">
+        <result property="classifybelong" column="classifybelong"/>
+        <result property="id" column="id"/>
+        <result property="about" column="about"/>
+        <result property="success" column="success"/>
+        <result property="classifyname" column="classifyname"/>
+        <result property="fail" column="fail"/>
+        <result property="alltitle" column="alltitle"/>
+        <result property="image" column="image"/>
+    </resultMap>
+    <resultMap id="discuss" type="com.example.demo.conttrle.entity.Discuss">
+        <result property="agreenum" column="agreenum"/>
+        <result property="id" column="id"/>
+        <result property="authorid" column="authorid"/>
+        <result property="belong" column="belong"/>
+        <result property="discuss" column="discuss"/>
+    </resultMap>
+    <resultMap id="nnn" type="com.example.demo.conttrle.entity.AllZhangjie">
+        <result property="unitname" column="unitname"/>
+        <result property="id" column="id"/>
+        <result property="unitnum" column="unitnum"/>
+        <result property="success" column="success"/>
+        <result property="belong" column="belong"/>
+        <result property="allgrade" column="allgrade"/>
+    </resultMap>
+    <resultMap id="ccc" type="com.example.demo.conttrle.entity.Problem">
+        <result property="problemtitle" column="problemtitle"/>
+        <result property="id" column="id"/>
+        <result property="analysis" column="analysis"/>
+        <result property="success" column="success"/>
+        <result property="belong" column="belong"/>
+        <result property="choicea" column="choicea"/>
+        <result property="choiceb" column="choiceb"/>
+        <result property="choicec" column="choicec"/>
+        <result property="choiced" column="choiced"/>
+        <result property="choice" column="choice"/>
+        <result property="chinasuccess" column="chinasuccess"/>
+        <result property="personsuccess" column="personsuccess"/>
+        <result property="grade" column="grade"/>
+    </resultMap>
+    <select id="getAllClassify" resultMap="mmm">
+select * from doctor_classify where classifybelong=#{id}
+</select>
+    <select id="getzhangjie" resultMap="nnn">
+select * from doctor_unit where belong=#{id}
+</select>
+    <select id="getVedio" resultType="com.example.demo.conttrle.entity.Vedio">
+    select * from doctor_vedio where belong=#{id}
+</select>
+    <select id="getAllProblem" resultMap="ccc">
+select * from doctor_problem where belong=#{id}
+</select>
+    <select id="getDiscuss" resultMap="discuss">
+select * from doctor_discuss where belong=#{id}
+</select>
+    <select id="getClassify" resultMap="mmm">
+select * from doctor_classify where id=#{id}
+</select>
+    <select id="getOneProblem" resultMap="ccc">
+select * from doctor_problem where id=#{id}
+</select>
+    <select id="getoneZhangjie" resultType="com.example.demo.conttrle.entity.AllZhangjie">
+select * from doctor_unit where unitname=#{unitname}
+</select>
+    <select id="login" resultType="int">
+        select count(*) FROM  doctor_user where username=#{appuser.username} and password=#{appuser.password}
+    </select>
+</mapper>
