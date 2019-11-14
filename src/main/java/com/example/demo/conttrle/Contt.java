@@ -308,7 +308,14 @@ public class Contt {
         return "空文件";
     }
     //新增科目
-
+    @PostMapping("charuzhangjie")
+    public int charuzhangjie(@RequestBody Request request){
+        return dao.insertzhangjie(request.getQingqiu(),request.getId());
+    }
+    @PostMapping("charuxueke")
+    public int charuxueke(@RequestBody Request request){
+        return dao.insertxueke(request.getQingqiu(),request.getId());
+    }
     //新增单元
     //修改单元
     //修改科目

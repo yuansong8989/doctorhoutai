@@ -11,6 +11,10 @@ public interface Dao {
     @Insert("INSERT INTO doctor_problem (problemtitle,analysis,success,choicea,choiceb,choicec,choiced,belong,choice) VALUES(#{problemtitle},#{analysis},#{success},#{choicea},#{choiceb},#{choicec},#{choiced},#{belong},#{choice})")
     int insertsafeuser(@Param("problemtitle") String problemtitle,@Param("analysis") String analysis,@Param("success") String success,@Param("choicea") String choicea,@Param("choiceb") String choiceb,@Param("choicec") String choicec,@Param("choiced") String choiced,@Param("belong") int belong,@Param("choice") String choice);
     List<Classify> getAllClassify(@Param("id") int id);
+    @Insert("INSERT INTO doctor_unit (unitname,belong) VALUES(#{unitname},#{belong})")
+    int insertzhangjie(@Param("unitname") String unitname,@Param("belong") int belong);
+    @Insert("INSERT INTO doctor_classify (classifyname,classifybelong) VALUES(#{classifyname},#{classifybelong})")
+    int insertxueke(@Param("classifyname") String classifyname,@Param("classifybelong") int classifybelong);
     List<AllZhangjie> getzhangjie(@Param("id") int id);
     AllZhangjie getoneZhangjie(@Param("unitname") String unitname);
     List<Vedio> getVedio(@Param("id") int id);
