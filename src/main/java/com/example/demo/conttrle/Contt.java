@@ -230,6 +230,7 @@ public class Contt {
     //导入excel
     @PostMapping("daoru")
     public String uploadExcel(HttpServletRequest request) throws Exception {
+        String e="";
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         InputStream inputStream = null;
         List<List<Object>> list = null;
@@ -243,35 +244,41 @@ public class Contt {
         inputStream.close();
 //连接数据库部分
         for (int i = 0; i < list.size(); i++) {
+            Problem problem=new Problem();
             List<Object> lo = list.get(i);
-            Poice poice = new Poice();
-            List<Choice> choices = new ArrayList<>();
-            for (int o = 0; o < 4; o++) {
-                Choice choice = new Choice();
-                switch (o) {
-                    case 0:
-                        choice.setXuhao("A");
-                        break;
-                    case 1:
-                        choice.setXuhao("B");
-                        break;
-                    case 2:
-                        choice.setXuhao("C");
-                        break;
-                    case 3:
-                        choice.setXuhao("D");
-                        break;
-                    default:
-                        break;
-                }
-                choice.setXuanxiang(String.valueOf(lo.get(o+3)));
-                choices.add(choice);
+            String all=String.valueOf(lo.get(0)).replaceAll("\r|\n","").replace(" ","");
+            if (all.contains("E")) {
+                problem.setChoiced(service.subString1(all, "D.", "E"));
+                int index = all.indexOf("E.");
+                e = all.substring(index + 1).replace(".","");
+                System.out.println("E点" + e);
+            } else {
+                //不存在E
+                int index = all.indexOf("D.");
+                String test3after = all.substring(index + 1).replace(".","");
+                System.out.println("D点" + test3after);
+                problem.setChoiced(test3after);
             }
-            poice.setChoce(choices);
-            String a = JSONObject.toJSONString(poice);
-            System.out.println("这个" + a);
-            AllZhangjie allZhangjie = dao.getoneZhangjie(String.valueOf(lo.get(7)));
-            dao.insertsafeuser(String.valueOf(lo.get(0)), String.valueOf(lo.get(1)), String.valueOf(lo.get(2)), String.valueOf(lo.get(3)), String.valueOf(lo.get(4)), String.valueOf(lo.get(5)), String.valueOf(lo.get(6)), allZhangjie.getId(),a);
+            String wenti=all.substring(0,all.indexOf("#"));
+            String jiexi=String.valueOf(lo.get(1));
+            String daan=service.subString1(all,"#","w");
+            String A=service.subString1(all,"A.","B");
+            String B=service.subString1(all,"B.","C");
+            String C=service.subString1(all,"C.","D.");
+            String D=service.subString1(all,"D.","E");
+            problem.setChoicea(A);
+            problem.setChoiceb(B);
+            problem.setChoicec(C);
+            problem.setChoiced(D);
+            problem.setSuccess(daan);
+            problem.setProblemtitle(wenti);
+            problem.setAnalysis(jiexi);
+            List<Choice> choices = new ArrayList<>();
+            String a = JSONObject.toJSONString(service.getpoice(problem,e));
+            //problemtitle,analysis,success,choicea,choiceb,choicec,choiced,belong,choice
+            AllZhangjie allZhangjie = dao.getoneZhangjie(String.valueOf(lo.get(2)));
+            dao.insertsafeuser(problem.getProblemtitle(), problem.getAnalysis(), problem.getSuccess(),problem.getChoicea(), problem.getChoiceb(), problem.getChoicec(),problem.getChoiced(), allZhangjie.getId(),a);
+            e="";
 //            mainDao.insert(String.valueOf(lo.get(0)), String.valueOf(lo.get(1)), String.valueOf(lo.get(2)), (int) (lo.get(3)), String.valueOf(lo.get(4)), String.valueOf(lo.get(5)), (int) (lo.get(6)), (int) (lo.get(7)), String.valueOf(lo.get(8)), (int) (lo.get(9)), String.valueOf(lo.get(10)), (int) (lo.get(11)), String.valueOf(lo.get(12)));
             //调用mapper中的insert方法
         }
